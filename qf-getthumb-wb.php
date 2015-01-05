@@ -3,7 +3,7 @@
 Plugin Name: QF-GetThumb-wb
 Plugin URI: http://takeai.silverpigeon.jp/
 Description: QF-GetThumb-wb is a plug-in that extracts the image data from the content and the argument, and makes the thumbnail.
-Version: 1.2.3
+Version: 1.2.4
 Author: AI.Takeuchi
 Author URI: http://takeai.silverpigeon.jp/
 
@@ -297,7 +297,7 @@ function qf_get_site($url) {
     // エラー出力を元に戻す
     error_reporting($old_err_level);
 
-    if (preg_match('/charset=([^\"]*)"/', $c, $cset)) {
+    if (preg_match('/charset=([a-zA-Z\-_0-9]*)/', $c, $cset)) {
         $code = $cset[1];
     } else {
         $code = 'auto';
@@ -659,51 +659,51 @@ function qf_get_thumb_wb_options_subpanel() {
     ?>
 <div class=wrap>
   <form method="post">
-    <h2><? _e('QF-GetThumb-wb Options', 'wpqfgtwb'); ?></h2>
+    <h2><?php _e('QF-GetThumb-wb Options', 'wpqfgtwb'); ?></h2>
     <p>※ QF-GetThumb と同時に有効にしないでください.</p>
     <fieldset name="options">
       <table cellpadding="2" cellspacing="0" width="100%">
        <tr>
-         <td><strong><? _e('Domain name', 'wpqfgtwb'); ?></strong></td>
-         <td><input type="text" name="domain_name" value="<?php echo $qf_get_thumb_wb_settings['domain_name']; ?>" size="100%" /></td>
+         <td><strong><?php _e('Domain name', 'wpqfgtwb'); ?></strong></td>
+         <td><input type="text" name="domain_name" value="<?php echo $qf_get_thumb_wb_settings['domain_name']; ?>" size="80%" /></td>
        </tr>
        <tr>
-         <td><strong><? _e('Uploads URL', 'wpqfgtwb'); ?></strong></td>
-         <td><input type="text" name="uploads_url" value="<?php echo $qf_get_thumb_wb_settings['uploads_url']; ?>" size="100%" /></td>
+         <td><strong><?php _e('Uploads URL', 'wpqfgtwb'); ?></strong></td>
+         <td><input type="text" name="uploads_url" value="<?php echo $qf_get_thumb_wb_settings['uploads_url']; ?>" size="80%" /></td>
        </tr>
        <tr>
-         <td><strong><? _e('Uploads Path', 'wpqfgtwb'); ?></strong></td>
-         <td><input type="text" name="uploads_path" value="<?php echo $qf_get_thumb_wb_settings['uploads_path']; ?>" size="100%" /></td>
+         <td><strong><?php _e('Uploads Path', 'wpqfgtwb'); ?></strong></td>
+         <td><input type="text" name="uploads_path" value="<?php echo $qf_get_thumb_wb_settings['uploads_path']; ?>" size="80%" /></td>
        </tr>
        <tr>
-         <td><strong><? _e('Default image', 'wpqfgtwb'); ?></strong></td>
-         <td><input type="text" name="default_image" value="<?php echo $qf_get_thumb_wb_settings['default_image']; ?>" size="100%" /></td>
+         <td><strong><?php _e('Default image', 'wpqfgtwb'); ?></strong></td>
+         <td><input type="text" name="default_image" value="<?php echo $qf_get_thumb_wb_settings['default_image']; ?>" size="80%" /></td>
        </tr>
        <tr>
-         <td><strong><? _e('Select random image', 'wpqfgtwb'); ?></strong></td>
+         <td><strong><?php _e('Select random image', 'wpqfgtwb'); ?></strong></td>
          <td><input type="checkbox" name="random_image" value="checked" <?php echo $qf_get_thumb_wb_settings['random_image']; ?> /> random_image=1 or 0</td>
        </tr>
        <tr>
-         <td><strong><? _e('Not use default image', 'wpqfgtwb'); ?></strong></td>
+         <td><strong><?php _e('Not use default image', 'wpqfgtwb'); ?></strong></td>
          <td><input type="checkbox" name="not_use_default_image" value="checked" <?php echo $qf_get_thumb_wb_settings['not_use_default_image']; ?> /> not_use_default_image=1 or 0</td>
        </tr>
        <tr>
-         <td><strong><? _e('Use attachment image', 'wpqfgtwb'); ?></strong></td>
+         <td><strong><?php _e('Use attachment image', 'wpqfgtwb'); ?></strong></td>
          <td><input type="checkbox" name="use_attachment_image" value="checked" <?php echo $qf_get_thumb_wb_settings['use_attachment_image']; ?> /> use_attachment_image=1 or 0</td>
        </tr>
        <tr>
-         <td><strong><? _e('Save folder', 'wpqfgtwb'); ?></strong></td>
+         <td><strong><?php _e('Save folder', 'wpqfgtwb'); ?></strong></td>
          <td><input type="text" name="folder_name" value="<?php echo $qf_get_thumb_wb_settings['folder_name']; ?>"  size="10" /></td>
        </tr>
        <tr>
-         <td><strong><? _e('Apend text', 'wpqfgtwb'); ?></strong></td>
+         <td><strong><?php _e('Apend text', 'wpqfgtwb'); ?></strong></td>
          <td><input type="text" name="append_text" value="<?php echo $qf_get_thumb_wb_settings['append_text']; ?>"  size="10" /></td>
        </tr>
      </table>
    </fieldset>
    <div class="submit">
-    <input type="submit" name="info_update" value="<? _e('Save settings', 'wpqfgtwb'); ?>" />
-    <input type="submit" name="load_default" value="<? _e('Load default settings', 'wpqfgtwb'); ?>" />
+    <input type="submit" name="info_update" value="<?php _e('Save settings', 'wpqfgtwb'); ?>" />
+    <input type="submit" name="load_default" value="<?php _e('Load default settings', 'wpqfgtwb'); ?>" />
     </div>
   </form>
 </div>

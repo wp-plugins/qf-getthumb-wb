@@ -31,6 +31,6 @@ ver.1.1.4
 更新のときはすごく遅くなります。
 オプション global=1 を指定して下さい。
 
-<?php echo the_qf_get_thumb_one('num=0&width=160&tag=0&global=1&crop_w=160&crop_h=120&find=logo&global=1', './images/defaultimg.png', 'http://www.yahoo.co.jp'); ?>
+<?php echo the_qf_get_thumb_one('num=0&width=160&tag=1&global=1&crop_w=160&crop_h=120&find=logo&global=1', './images/defaultimg.png', 'http://www.yahoo.co.jp'); ?>
 
 --

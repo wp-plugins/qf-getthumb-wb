@@ -151,7 +151,7 @@ function imageresize($image = "", $width = 0, $height = 0, $aspect = true) {
 
 
 /* JPEG、GIF、PNGのイメージリソースをクロップして返す関数 */
-function imagecrop($image = "", $left = 0, $top = 0, $right = 0, $bottom = 0) {
+function qf_imagecrop($image = "", $left = 0, $top = 0, $right = 0, $bottom = 0) {
 	// 幅と高さを取得
 	$width = @imagesx($image);
 	$height = @imagesy($image);

@@ -2,8 +2,8 @@
 Contributors: AI.Takeuchi
 Tags: automatic, code, content, excerpt, files, Formatting, gallery, html, image, images, list, media, mobile, performance, photo, photos, picture, pictures, plugin, plugins, Post, posts, preview, thumbnail, url, wordpress, xhtml, RSS, ATOM, FEED
 Requires at least: 2.6
-Tested up to: 2.7
-Stable tag: 1.2.3
+Tested up to: 4.1
+Stable tag: 1.2.4
 
 This plugin branched from version 1.1.3 of QF-GetThumb.
 Added function and change configuration screen.
@@ -40,7 +40,7 @@ It is very easy to use QF-GetThumb-wb.
 You write in "<?php echo the_qf_get_thumb_one(); ?>" the source of theme.
 Include various settings in a function, if necessary.
 
-Example => <?php echo the_qf_get_thumb_one('num=0&width=160&tag=0&global=1&crop_w=160&crop_h=120&find=logo', './images/defaultimg.png'); ?>
+Example => <?php echo the_qf_get_thumb_one('num=0&width=160&tag=1&global=1&crop_w=160&crop_h=120&find=logo', './images/defaultimg.png'); ?>
 
 [first-options]
 num	 	: Index of take out the image in the source of content.
@@ -79,6 +79,9 @@ source		: HTML code of target,
 
 == Changelog ==
 
+= 1.2.4 =
+* Supported WordPress version 4.1.
+
 = 1.2.3 =
 * Attachment image support.
 
@@ -103,7 +106,7 @@ source		: HTML code of target,
 = 1.1.4 =
 * Branched from version 1.1.3 of QF-GetThumb.
 * Change configuration screen.
-* Other website images support. update by 2 weeks, show website is displaying very slowly  when updating. set option 'global=1'. Example: <?php echo the_qf_get_thumb_one('num=0&width=160&tag=0&global=1&crop_w=160&crop_h=120&find=logo&global=1', './images/defaultimg.png', 'http://www.yahoo.co.jp'); ?>
+* Other website images support. update by 2 weeks, show website is displaying very slowly  when updating. set option 'global=1'. Example: <?php echo the_qf_get_thumb_one('num=0&width=160&tag=1&global=1&crop_w=160&crop_h=120&find=logo&global=1', './images/defaultimg.png', 'http://www.yahoo.co.jp'); ?>
 
 
 == Others ==
