@@ -3,7 +3,7 @@
 Plugin Name: QF-GetThumb-wb
 Plugin URI: http://takeai.silverpigeon.jp/
 Description: QF-GetThumb-wb is a plug-in that extracts the image data from the content and the argument, and makes the thumbnail.
-Version: 1.2.4
+Version: 1.2.5
 Author: AI.Takeuchi
 Author URI: http://takeai.silverpigeon.jp/
 
@@ -491,7 +491,7 @@ function qf_make_cropimage($image, $crop_w, $crop_h) {
     }
 
     // イメージのクロップ処理
-    $image = imagecrop($image, $left, $top, $right, $bottom);
+    $image = qf_imagecrop($image, $left, $top, $right, $bottom);
     
     return $image;
 }
