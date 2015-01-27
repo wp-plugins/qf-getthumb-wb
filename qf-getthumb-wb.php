@@ -3,7 +3,7 @@
 Plugin Name: QF-GetThumb-wb
 Plugin URI: http://takeai.silverpigeon.jp/
 Description: QF-GetThumb-wb is a plug-in that extracts the image data from the content and the argument, and makes the thumbnail.
-Version: 1.2.5
+Version: 1.2.6
 Author: AI.Takeuchi
 Author URI: http://takeai.silverpigeon.jp/
 
@@ -90,7 +90,7 @@ function the_qf_get_thumb_one($gt_settings = "", $default_image = "", $source = 
     if ($gt_settings['global'] && preg_match('/^https?:\/\//', $source)) {
         //echo 'external link';
         $is_external_site_img = true;
-        $save = qf_get_savepath_external_link($source, $settings['uploads_path'], $settings['append_text'], $settings['folder_name'], $gt_settings['width'], $gt_settings['height'], $gt_settings['crop_w'], $gt_settings['crop_h']);
+        $save = qf_get_savepath_external_link($source, $settings['uploads_path'], $settings['append_text'], $settings['basic_auth'], $settings['folder_name'], $gt_settings['width'], $gt_settings['height'], $gt_settings['crop_w'], $gt_settings['crop_h']);
         //echo 'save = ' . $save;
         if (file_exists($save)) {
             $it = filemtime($save);
@@ -136,7 +136,7 @@ function the_qf_get_thumb_one($gt_settings = "", $default_image = "", $source = 
 
     if (!$is_external_site_img) {
         // 保存先を設定
-        $save = qf_get_savepath($settings['domain_name'], $url, $settings['uploads_path'], $settings['append_text'], $settings['folder_name'], $gt_settings['width'], $gt_settings['height'], $gt_settings['crop_w'], $gt_settings['crop_h']);
+      $save = qf_get_savepath($settings['domain_name'], $url, $settings['uploads_path'], $settings['append_text'], $settings['basic_auth'], $settings['folder_name'], $gt_settings['width'], $gt_settings['height'], $gt_settings['crop_w'], $gt_settings['crop_h']);
     }
 
     //echo 'save = ' . $save;
@@ -268,7 +268,7 @@ function qf_get_parameter($gt_settings, $default_image, $random_image, $not_use_
 }
 
 // 保存先を設定 external link
-function qf_get_savepath_external_link($link_url, $uploads_path, $append_text, $folder_name, $width, $height, $crop_w, $crop_h) {
+function qf_get_savepath_external_link($link_url, $uploads_path, $append_text, $basic_auth, $folder_name, $width, $height, $crop_w, $crop_h) {
     
     // URLを保存先パスに変換
     $bname = str_replace('http://', '', $link_url);
@@ -278,7 +278,7 @@ function qf_get_savepath_external_link($link_url, $uploads_path, $append_text, $
     //echo 'bname = '. $bname;
     
     // リモートファイルのサイズ取得
-    //$size = qf_get_remotefilesize($link_url);//遅くなるので中止
+    //$size = qf_get_remotefilesize($link_url, $basic_auth);//遅くなるので中止
     $size = 1;
 
     // 保存ファイル名定義
@@ -451,11 +451,11 @@ function qf_make_thumbnail($url, $width, $height) {
 
 
 // 保存先を設定
-function qf_get_savepath($domain_name, $url, $uploads_path, $append_text, $folder_name, $width, $height, $crop_w, $crop_h) {
+function qf_get_savepath($domain_name, $url, $uploads_path, $append_text, $basic_auth, $folder_name, $width, $height, $crop_w, $crop_h) {
     $bname = basename(str_replace($domain_name, '', $url));
     $bname = preg_replace('/\.[^\.]+$/', '.png', $bname);
     // リモートファイルのサイズ取得
-    $size = qf_get_remotefilesize($url);
+    $size = qf_get_remotefilesize($url, $basic_auth);
 
     // 保存ファイル名定義
     $file = $uploads_path .  '/' . $folder_name."/".$width."-".$height."x".$crop_w."-".$crop_h."/".$append_text."_".$size."_".$bname;
@@ -515,12 +515,12 @@ function qf_check_savedir($save) {
 
 
 // 対象ファイルとキャッシュを比較
-function qf_check_samefile($save, $url, $append_text) {
+function qf_check_samefile($save, $url, $append_text, $basic_auth) {
     //キャッシュファイルサイズ取得
     $c_size = str_replace($append_text, "", str_replace("_".basename($url), "", basename($save)));
 
     // リモートファイルのサイズ取得
-    $r_size = qf_get_remotefilesize($url);
+    $r_size = qf_get_remotefilesize($url, $basic_auth);
 
     // ファイルが同一でなければ偽を返す
     if (!$c_size == $r_size) {
@@ -572,7 +572,15 @@ function qf_get_thumburl($save, $uploads_path, $uploads_url) {
 
 
 // リモートファイルのサイズ取得
-function qf_get_remotefilesize($url) {
+// Basic認証
+// file_get_contents('http://(ユーザーID):(パスワード)@www.example.com/example.html');
+function qf_get_remotefilesize($url, $basic_auth) {
+    // support basic auth
+    if ($basic_auth && (strpos($url, 'http://') == 0 || strpos($url, 'https://') == 0)) {
+      $f = explode('//', $url, 2);
+      $url = $f[0].'//'.$basic_auth.'@'.$f[1];
+    }
+
     $fileData = file_get_contents($url);
     $fileSize = strlen($fileData);   // byte単位
     return $fileSize;
@@ -601,6 +609,8 @@ function qf_load_default() {
     $settings['folder_name'] = 'qfgtwb';
     $settings['append_text'] = 'qfgtwb';
 
+    $settings['basic_auth'] = '';
+
     $cwd = getcwd();
     $cwd = str_replace('wp-admin', 'wp-content/uploads', $cwd);
     $url = get_settings('siteurl') . '/wp-content/uploads';
@@ -626,6 +636,7 @@ function qf_get_thumb_wb_options_subpanel() {
             'default_image' => $_POST['default_image'],
             'folder_name' => $_POST['folder_name'],
             'append_text' => $_POST['append_text'],
+	    'basic_auth' => $_POST['basic_auth'],
             'random_image' => $_POST['random_image'],
             'not_use_default_image' => $_POST['not_use_default_image'],
             'use_attachment_image' => $_POST['use_attachment_image']
@@ -698,6 +709,10 @@ function qf_get_thumb_wb_options_subpanel() {
        <tr>
          <td><strong><?php _e('Apend text', 'wpqfgtwb'); ?></strong></td>
          <td><input type="text" name="append_text" value="<?php echo $qf_get_thumb_wb_settings['append_text']; ?>"  size="10" /></td>
+       </tr>
+       <tr>
+         <td><strong><?php _e('Basic Authentication', 'wpqfgtwb'); ?></strong></td>
+         <td><input type="text" name="basic_auth" value="<?php echo $qf_get_thumb_wb_settings['basic_auth']; ?>"  size="20%" /><?php _e('Input format: ID:PASSWORD (PHP function file_get_contents use this ID and Password)', 'wpqfgtwb'); ?></td>
        </tr>
      </table>
    </fieldset>
