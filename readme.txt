@@ -132,4 +132,3 @@ AI.Takeuchi <takeai@silverpigeon.jp>
 2. screenshot-2.png
 3. screenshot-3.png
 
-
