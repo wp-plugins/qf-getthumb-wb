@@ -1,0 +1,81 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: QF-GetThumb-wb\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-04-16 11:17+0900\n"
+"PO-Revision-Date: 2015-01-27 12:14+0900\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_c\n"
+"X-Poedit-Basepath: ../qf-getthumb-wb\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: qf-getthumb-wb.php:661
+msgid "QF-GetThumb-wb Options"
+msgstr "QF-GetThumb-wb オプション設定"
+
+#: qf-getthumb-wb.php:666
+msgid "Domain name"
+msgstr "ドメイン名"
+
+#: qf-getthumb-wb.php:670
+msgid "Uploads URL"
+msgstr "サムネイル作成先URL"
+
+#: qf-getthumb-wb.php:674
+msgid "Uploads Path"
+msgstr "サムネイル作成先パス"
+
+#: qf-getthumb-wb.php:678
+msgid "Default image"
+msgstr "デフォルト画像"
+
+#: qf-getthumb-wb.php:682
+msgid "Select random image"
+msgstr "画像をランダムに選ぶ"
+
+#: qf-getthumb-wb.php:686
+msgid "Not use default image"
+msgstr "デフォルト画像を使用しない"
+
+#: qf-getthumb-wb.php:690
+msgid "Use attachment image"
+msgstr "添付画像を使用する"
+
+#: qf-getthumb-wb.php:694
+msgid "Save folder"
+msgstr "保存フォルダ名"
+
+#: qf-getthumb-wb.php:698
+msgid "Apend text"
+msgstr "接頭句"
+
+#: qf-getthumb-wb.php:704
+msgid "Save settings"
+msgstr "設定を保存"
+
+#: qf-getthumb-wb.php:705
+msgid "Load default settings"
+msgstr "初期設定に戻す"
+
+msgid "Basic Authentication"
+msgstr "BASIC認証"
+
+msgid ""
+"Input format: ID:PASSWORD (PHP function file_get_contents use this ID and "
+"Password)"
+msgstr ""
+"入力書式: ID:PASSWORD (この ID と パスワードは PHP の関数 file_get_contents "
+"が使用します)"
+
+#~ msgid "Full domain name"
+#~ msgstr "フルドメイン名"
+
+#~ msgid "Document root"
+#~ msgstr "ドキュメントルート"
