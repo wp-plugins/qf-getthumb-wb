@@ -1,15 +1,14 @@
 <?php
 /*
 Plugin Name: QF-GetThumb-wb
-Plugin URI: http://takeai.silverpigeon.jp/
-Description: QF-GetThumb-wb is a plug-in that extracts the image data from the content and the argument, and makes the thumbnail.
-Version: 1.2.7
-Author: AI.Takeuchi
-Author URI: http://takeai.silverpigeon.jp/
+Plugin URI: http://la-passeggiata.com/?p=290&lang=en
+Description: QF-GetThumb is a plug-in that extracts the image data from the content and the argument, and makes the thumbnail.
+Version: 1.2.3
+Author: Q.F.
+Author URI: http://la-passeggiata.com/?lang=en
 
-This plugin branched from version 1.1.3 of QF-GetThumb.
 
-Original QF-GetThumb plugin for WordPress Copyright 2009 Q.F. (email : info@la-passeggiata.com)
+Copyright 2009 Q.F. (email : info@la-passeggiata.com)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -90,7 +89,7 @@ function the_qf_get_thumb_one($gt_settings = "", $default_image = "", $source = 
     if ($gt_settings['global'] && preg_match('/^https?:\/\//', $source)) {
         //echo 'external link';
         $is_external_site_img = true;
-        $save = qf_get_savepath_external_link($source, $settings['uploads_path'], $settings['append_text'], $settings['basic_auth'], $settings['folder_name'], $gt_settings['width'], $gt_settings['height'], $gt_settings['crop_w'], $gt_settings['crop_h']);
+        $save = qf_get_savepath_external_link($source, $settings['uploads_path'], $settings['append_text'], $settings['folder_name'], $gt_settings['width'], $gt_settings['height'], $gt_settings['crop_w'], $gt_settings['crop_h']);
         //echo 'save = ' . $save;
         if (file_exists($save)) {
             $it = filemtime($save);
@@ -136,7 +135,7 @@ function the_qf_get_thumb_one($gt_settings = "", $default_image = "", $source = 
 
     if (!$is_external_site_img) {
         // 保存先を設定
-      $save = qf_get_savepath($settings['domain_name'], $url, $settings['uploads_path'], $settings['append_text'], $settings['basic_auth'], $settings['folder_name'], $gt_settings['width'], $gt_settings['height'], $gt_settings['crop_w'], $gt_settings['crop_h']);
+        $save = qf_get_savepath($settings['domain_name'], $url, $settings['uploads_path'], $settings['append_text'], $settings['folder_name'], $gt_settings['width'], $gt_settings['height'], $gt_settings['crop_w'], $gt_settings['crop_h']);
     }
 
     //echo 'save = ' . $save;
@@ -268,7 +267,7 @@ function qf_get_parameter($gt_settings, $default_image, $random_image, $not_use_
 }
 
 // 保存先を設定 external link
-function qf_get_savepath_external_link($link_url, $uploads_path, $append_text, $basic_auth, $folder_name, $width, $height, $crop_w, $crop_h) {
+function qf_get_savepath_external_link($link_url, $uploads_path, $append_text, $folder_name, $width, $height, $crop_w, $crop_h) {
     
     // URLを保存先パスに変換
     $bname = str_replace('http://', '', $link_url);
@@ -278,7 +277,7 @@ function qf_get_savepath_external_link($link_url, $uploads_path, $append_text, $
     //echo 'bname = '. $bname;
     
     // リモートファイルのサイズ取得
-    //$size = qf_get_remotefilesize($link_url, $basic_auth);//遅くなるので中止
+    //$size = qf_get_remotefilesize($link_url);//遅くなるので中止
     $size = 1;
 
     // 保存ファイル名定義
@@ -297,7 +296,7 @@ function qf_get_site($url) {
     // エラー出力を元に戻す
     error_reporting($old_err_level);
 
-    if (preg_match('/charset=([a-zA-Z\-_0-9]*)/', $c, $cset)) {
+    if (preg_match('/charset=([^\"]*)"/', $c, $cset)) {
         $code = $cset[1];
     } else {
         $code = 'auto';
@@ -451,11 +450,11 @@ function qf_make_thumbnail($url, $width, $height) {
 
 
 // 保存先を設定
-function qf_get_savepath($domain_name, $url, $uploads_path, $append_text, $basic_auth, $folder_name, $width, $height, $crop_w, $crop_h) {
+function qf_get_savepath($domain_name, $url, $uploads_path, $append_text, $folder_name, $width, $height, $crop_w, $crop_h) {
     $bname = basename(str_replace($domain_name, '', $url));
     $bname = preg_replace('/\.[^\.]+$/', '.png', $bname);
     // リモートファイルのサイズ取得
-    $size = qf_get_remotefilesize($url, $basic_auth);
+    $size = qf_get_remotefilesize($url);
 
     // 保存ファイル名定義
     $file = $uploads_path .  '/' . $folder_name."/".$width."-".$height."x".$crop_w."-".$crop_h."/".$append_text."_".$size."_".$bname;
@@ -491,7 +490,7 @@ function qf_make_cropimage($image, $crop_w, $crop_h) {
     }
 
     // イメージのクロップ処理
-    $image = qf_imagecrop($image, $left, $top, $right, $bottom);
+    $image = imagecrop($image, $left, $top, $right, $bottom);
     
     return $image;
 }
@@ -515,12 +514,12 @@ function qf_check_savedir($save) {
 
 
 // 対象ファイルとキャッシュを比較
-function qf_check_samefile($save, $url, $append_text, $basic_auth) {
+function qf_check_samefile($save, $url, $append_text) {
     //キャッシュファイルサイズ取得
     $c_size = str_replace($append_text, "", str_replace("_".basename($url), "", basename($save)));
 
     // リモートファイルのサイズ取得
-    $r_size = qf_get_remotefilesize($url, $basic_auth);
+    $r_size = qf_get_remotefilesize($url);
 
     // ファイルが同一でなければ偽を返す
     if (!$c_size == $r_size) {
@@ -572,15 +571,7 @@ function qf_get_thumburl($save, $uploads_path, $uploads_url) {
 
 
 // リモートファイルのサイズ取得
-// Basic認証
-// file_get_contents('http://(ユーザーID):(パスワード)@www.example.com/example.html');
-function qf_get_remotefilesize($url, $basic_auth) {
-    // support basic auth
-    if ($basic_auth && (strpos($url, 'http://') == 0 || strpos($url, 'https://') == 0)) {
-      $f = explode('//', $url, 2);
-      $url = $f[0].'//'.$basic_auth.'@'.$f[1];
-    }
-
+function qf_get_remotefilesize($url) {
     $fileData = file_get_contents($url);
     $fileSize = strlen($fileData);   // byte単位
     return $fileSize;
@@ -609,8 +600,6 @@ function qf_load_default() {
     $settings['folder_name'] = 'qfgtwb';
     $settings['append_text'] = 'qfgtwb';
 
-    $settings['basic_auth'] = '';
-
     $cwd = getcwd();
     $cwd = str_replace('wp-admin', 'wp-content/uploads', $cwd);
     $url = get_settings('siteurl') . '/wp-content/uploads';
@@ -636,7 +625,6 @@ function qf_get_thumb_wb_options_subpanel() {
             'default_image' => $_POST['default_image'],
             'folder_name' => $_POST['folder_name'],
             'append_text' => $_POST['append_text'],
-	    'basic_auth' => $_POST['basic_auth'],
             'random_image' => $_POST['random_image'],
             'not_use_default_image' => $_POST['not_use_default_image'],
             'use_attachment_image' => $_POST['use_attachment_image']
@@ -670,55 +658,51 @@ function qf_get_thumb_wb_options_subpanel() {
     ?>
 <div class=wrap>
   <form method="post">
-    <h2><?php _e('QF-GetThumb-wb Options', 'wpqfgtwb'); ?></h2>
+    <h2><? _e('QF-GetThumb-wb Options', 'wpqfgtwb'); ?></h2>
     <p>※ QF-GetThumb と同時に有効にしないでください.</p>
     <fieldset name="options">
       <table cellpadding="2" cellspacing="0" width="100%">
        <tr>
-         <td><strong><?php _e('Domain name', 'wpqfgtwb'); ?></strong></td>
-         <td><input type="text" name="domain_name" value="<?php echo $qf_get_thumb_wb_settings['domain_name']; ?>" size="80%" /></td>
+         <td><strong><? _e('Domain name', 'wpqfgtwb'); ?></strong></td>
+         <td><input type="text" name="domain_name" value="<?php echo $qf_get_thumb_wb_settings['domain_name']; ?>" size="100%" /></td>
        </tr>
        <tr>
-         <td><strong><?php _e('Uploads URL', 'wpqfgtwb'); ?></strong></td>
-         <td><input type="text" name="uploads_url" value="<?php echo $qf_get_thumb_wb_settings['uploads_url']; ?>" size="80%" /></td>
+         <td><strong><? _e('Uploads URL', 'wpqfgtwb'); ?></strong></td>
+         <td><input type="text" name="uploads_url" value="<?php echo $qf_get_thumb_wb_settings['uploads_url']; ?>" size="100%" /></td>
        </tr>
        <tr>
-         <td><strong><?php _e('Uploads Path', 'wpqfgtwb'); ?></strong></td>
-         <td><input type="text" name="uploads_path" value="<?php echo $qf_get_thumb_wb_settings['uploads_path']; ?>" size="80%" /></td>
+         <td><strong><? _e('Uploads Path', 'wpqfgtwb'); ?></strong></td>
+         <td><input type="text" name="uploads_path" value="<?php echo $qf_get_thumb_wb_settings['uploads_path']; ?>" size="100%" /></td>
        </tr>
        <tr>
-         <td><strong><?php _e('Default image', 'wpqfgtwb'); ?></strong></td>
-         <td><input type="text" name="default_image" value="<?php echo $qf_get_thumb_wb_settings['default_image']; ?>" size="80%" /></td>
+         <td><strong><? _e('Default image', 'wpqfgtwb'); ?></strong></td>
+         <td><input type="text" name="default_image" value="<?php echo $qf_get_thumb_wb_settings['default_image']; ?>" size="100%" /></td>
        </tr>
        <tr>
-         <td><strong><?php _e('Select random image', 'wpqfgtwb'); ?></strong></td>
+         <td><strong><? _e('Select random image', 'wpqfgtwb'); ?></strong></td>
          <td><input type="checkbox" name="random_image" value="checked" <?php echo $qf_get_thumb_wb_settings['random_image']; ?> /> random_image=1 or 0</td>
        </tr>
        <tr>
-         <td><strong><?php _e('Not use default image', 'wpqfgtwb'); ?></strong></td>
+         <td><strong><? _e('Not use default image', 'wpqfgtwb'); ?></strong></td>
          <td><input type="checkbox" name="not_use_default_image" value="checked" <?php echo $qf_get_thumb_wb_settings['not_use_default_image']; ?> /> not_use_default_image=1 or 0</td>
        </tr>
        <tr>
-         <td><strong><?php _e('Use attachment image', 'wpqfgtwb'); ?></strong></td>
+         <td><strong><? _e('Use attachment image', 'wpqfgtwb'); ?></strong></td>
          <td><input type="checkbox" name="use_attachment_image" value="checked" <?php echo $qf_get_thumb_wb_settings['use_attachment_image']; ?> /> use_attachment_image=1 or 0</td>
        </tr>
        <tr>
-         <td><strong><?php _e('Save folder', 'wpqfgtwb'); ?></strong></td>
+         <td><strong><? _e('Save folder', 'wpqfgtwb'); ?></strong></td>
          <td><input type="text" name="folder_name" value="<?php echo $qf_get_thumb_wb_settings['folder_name']; ?>"  size="10" /></td>
        </tr>
        <tr>
-         <td><strong><?php _e('Apend text', 'wpqfgtwb'); ?></strong></td>
+         <td><strong><? _e('Apend text', 'wpqfgtwb'); ?></strong></td>
          <td><input type="text" name="append_text" value="<?php echo $qf_get_thumb_wb_settings['append_text']; ?>"  size="10" /></td>
-       </tr>
-       <tr>
-         <td><strong><?php _e('Basic Authentication', 'wpqfgtwb'); ?></strong></td>
-         <td><input type="text" name="basic_auth" value="<?php echo $qf_get_thumb_wb_settings['basic_auth']; ?>"  size="20%" /><?php _e('Input format: ID:PASSWORD (PHP function file_get_contents use this ID and Password)', 'wpqfgtwb'); ?></td>
        </tr>
      </table>
    </fieldset>
    <div class="submit">
-    <input type="submit" name="info_update" value="<?php _e('Save settings', 'wpqfgtwb'); ?>" />
-    <input type="submit" name="load_default" value="<?php _e('Load default settings', 'wpqfgtwb'); ?>" />
+    <input type="submit" name="info_update" value="<? _e('Save settings', 'wpqfgtwb'); ?>" />
+    <input type="submit" name="load_default" value="<? _e('Load default settings', 'wpqfgtwb'); ?>" />
     </div>
   </form>
 </div>
