@@ -3,7 +3,7 @@ Contributors: AI.Takeuchi
 Tags: automatic, code, content, excerpt, files, Formatting, gallery, html, image, images, list, media, mobile, performance, photo, photos, picture, pictures, plugin, plugins, Post, posts, preview, thumbnail, url, wordpress, xhtml, RSS, ATOM, FEED
 Requires at least: 2.6
 Tested up to: 4.1
-Stable tag: 1.2.7
+Stable tag: 1.2.6
 
 This plugin branched from version 1.1.3 of QF-GetThumb.
 Added function and change configuration screen.
@@ -79,9 +79,6 @@ source		: HTML code of target,
 
 == Changelog ==
 
-= 1.2.7 =
-* bugfix.
-
 = 1.2.6 =
 * Supported Basic Authentication.
 
@@ -134,4 +131,5 @@ AI.Takeuchi <takeai@silverpigeon.jp>
 1. screenshot-1.png
 2. screenshot-2.png
 3. screenshot-3.png
+
 
