@@ -3,7 +3,7 @@
 Plugin Name: QF-GetThumb-wb
 Plugin URI: http://takeai.silverpigeon.jp/
 Description: QF-GetThumb-wb is a plug-in that extracts the image data from the content and the argument, and makes the thumbnail.
-Version: 1.2.7
+Version: 1.2.8
 Author: AI.Takeuchi
 Author URI: http://takeai.silverpigeon.jp/
 
@@ -146,7 +146,7 @@ function the_qf_get_thumb_one($gt_settings = "", $default_image = "", $source = 
         //echo $save;
         // サムネイルデータ生成
         //$url = 'http://hotta-glass.com/parts/wp-content/uploads/2011/01/syouji1-254x227.jpg';
-        $image = qf_make_thumbnail($url, $gt_settings['width'], $gt_settings['height']);
+        $image = qf_make_thumbnail($url, $gt_settings['width'], $gt_settings['height'], $settings['basic_auth']);
         if ($Qfgtwb_debug) {
             echo "<p>qf-getthumb-wb: the_qf_get_thumb_one: url = $url, image size = " . strlen($image) . '</p>';
         }
@@ -439,9 +439,9 @@ function qf_get_imagepath($imgtag) {
 
 
 // サムネイルデータ生成
-function qf_make_thumbnail($url, $width, $height) {
+function qf_make_thumbnail($url, $width, $height, $basic_auth) {
     // イメージリソース取得
-    $image = makerc_image($url);
+    $image = makerc_image($url, $basic_auth);
     
     // イメージのリサイズ処理
     $image = imageresize($image, $width, $height, true);

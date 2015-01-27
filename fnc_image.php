@@ -19,8 +19,14 @@ function getformat_image($file = "") {
 
 
 /* JPEG、GIF、PNGのイメージリソースを返す関数 */
-function makerc_image($file = "", $format = 0) {
+function makerc_image($file = "", $basic_auth, $format = 0) {
     global $Qfgtwb_debug;
+
+    // support basic auth
+    if ($basic_auth && (strpos($file, 'http://') == 0 || strpos($file, 'https://') == 0)) {
+      $f = explode('//', $file, 2);
+      $file = $f[0].'//'.$basic_auth.'@'.$f[1];
+    }
 
     // パスから元画像のフォーマットを取得
     // 1st try: do getimagesize.
